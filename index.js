@@ -5,7 +5,7 @@ var token = process.env.TOKEN
 
 var options = {
   hostname: 'sandbox.tradier.com',
-  path: '/v1/markets/options/quotes?symbols=aapl',
+  path: '/v1/markets/options/chains?symbol=msft&expiration=2013-11-14',
   method: 'GET',
   headers: {'Accept': 'application/json',
             'Authorization': 'Bearer ' + token

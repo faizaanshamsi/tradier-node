@@ -6,7 +6,6 @@
 <body>
   <script charset="utf-8">
     var socket = io.connect('http://localhost:3000');
-
     socket.on('connect', function () {
       socket.on('option-chain-received', function(data) {
         console.log(data);

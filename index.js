@@ -20,7 +20,7 @@ setInterval(function() {
       console.log("Connected");
       res.on('data',function(data){
           // data comes back as node buffer, can be converted to string or JSON
-          // console.log(JSON.stringify(data));
+          // console.log(JSON.parse(data));
           console.log(data.toString('utf-8'));
           io.emit('option-chain-received', data.toString('utf-8'))
       });

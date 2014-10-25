@@ -1,0 +1,11 @@
+{
+  "name": "tradier-sandbox",
+  "version": "1.0.0",
+  "description": "Playing with tradier sandbox",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Faizaan Shamsi",
+  "license": "MIT"
+}

@@ -1,5 +1,6 @@
 // var http = require("http");
 var https = require('https');
+var io = require('socket.io').listen(3000);
 
 var token = process.env.TOKEN
 
@@ -13,17 +14,21 @@ var options = {
 };
 
 console.log("Start");
-var x = https.request(options, function(res){
-    console.log("Connected");
-    res.on('data',function(data){
-        // data comes back as node buffer, can be converted to string or JSON
-        // console.log(JSON.stringify(data));
-        console.log(data.toString('utf-8'));
-    });
-});
+setInterval(function() {
+  console.log("Requesting")
+  var x = https.request(options, function(res){
+      console.log("Connected");
+      res.on('data',function(data){
+          // data comes back as node buffer, can be converted to string or JSON
+          // console.log(JSON.stringify(data));
+          console.log(data.toString('utf-8'));
+          io.emit('option-chain-received', data.toString('utf-8'))
+      });
+  });
 
-x.on('error',function(err){
-    console.log(err);
-});
+  x.on('error',function(err){
+      console.log(err);
+  });
 
-x.end();
+  x.end();
+}, 5000);

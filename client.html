@@ -1,0 +1,17 @@
+<head>
+  <script src="https://cdn.socket.io/socket.io-1.1.0.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+</head>
+
+<body>
+  <script charset="utf-8">
+    var socket = io.connect('http://localhost:3000');
+
+    socket.on('connect', function () {
+      socket.on('option-chain-received', function(data) {
+        console.log(data);
+        debugger
+      });
+    });
+  </script>
+</body>

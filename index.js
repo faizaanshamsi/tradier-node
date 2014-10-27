@@ -1,4 +1,6 @@
 // var http = require("http");
+// 'use strict';
+// require('locus');
 var https = require('https');
 var io = require('socket.io').listen(3000);
 
@@ -13,22 +15,28 @@ var options = {
   }
 };
 
-console.log("Start");
+
 setInterval(function() {
-  console.log("Requesting")
-  var x = https.request(options, function(res){
+  var buffer = "",
+      data;
+
+  var req = https.request(options, function(res){
       console.log("Connected");
-      res.on('data',function(data){
-          // data comes back as node buffer, can be converted to string or JSON
-          // console.log(JSON.parse(data));
-          console.log(data.toString('utf-8'));
-          io.emit('option-chain-received', data.toString('utf-8'))
+      res.on('data',function(chunk){
+          buffer += chunk;
+      });
+
+      res.on('end', function(err) {
+        data = JSON.parse(buffer);
+        console.log(data);
+        io.emit('option-chain-received', data);
       });
   });
 
-  x.on('error',function(err){
+  req.on('error',function(err){
       console.log(err);
   });
 
-  x.end();
+
+  req.end();
 }, 5000);

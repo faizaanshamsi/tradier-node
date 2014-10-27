@@ -4,12 +4,30 @@
 </head>
 
 <body>
+  <ul class='options'></ul>
+
   <script charset="utf-8">
     var socket = io.connect('http://localhost:3000');
+    var optionsData;
+
+    var drawOptions = function(data) {
+      var allOptions = data['options']['option']
+      for (i = 0; i < allOptions.length; i++) {
+        var description  = allOptions[i]['description']
+
+        $('.options').append("<li>" + description + "</li>");
+      }
+    }
+
     socket.on('connect', function () {
       socket.on('option-chain-received', function(data) {
-        console.log(data);
+        optionsData = data
+        console.log("Received");
+
+        drawOptions(optionsData);
       });
     });
+
+
   </script>
 </body>

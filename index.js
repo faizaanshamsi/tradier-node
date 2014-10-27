@@ -15,6 +15,12 @@ var options = {
   }
 };
 
+var allData = []
+var triggers = []
+var msftPrice = 45.91
+
+
+var priceMove50 = function()
 
 setInterval(function() {
   var buffer = "",
@@ -29,14 +35,14 @@ setInterval(function() {
       res.on('end', function(err) {
         data = JSON.parse(buffer);
         console.log(data);
-        io.emit('option-chain-received', data);
+        // io.emit('option-chain-received', data);
+        allData.push(data);
       });
   });
 
   req.on('error',function(err){
       console.log(err);
   });
-
 
   req.end();
 }, 5000);

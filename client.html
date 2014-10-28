@@ -12,19 +12,20 @@
 
     var drawOptions = function(data) {
       var allOptions = data['options']['option']
-      for (i = 0; i < allOptions.length; i++) {
+      var i = 25;
+      // for (i = 0; i < allOptions.length; i++) {
         var description  = allOptions[i]['description']
-
-        $('.options').append("<li>" + description + "</li>");
-      }
+        var bid = allOptions[i]['bid']
+        var ask = allOptions[i]['ask']
+        $('.options').append("<li>" + description + " | " + bid + ' / ' + ask + "</li>");
+      // }
     }
 
     socket.on('connect', function () {
       socket.on('option-chain-received', function(data) {
         optionsData = data
-        debugger
         console.log("Received");
-
+        console.log(optionsData);
         drawOptions(optionsData);
       });
     });

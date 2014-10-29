@@ -8,17 +8,17 @@ var token = process.env.TOKEN
 
 var options = {
   hostname: 'sandbox.tradier.com',
-  path: '/v1/markets/options/chains?symbol=msft&expiration=2014-11-14',
+  path: '/v1/markets/options/chains?symbol=vxx&expiration=2014-11-14',
   method: 'GET',
   headers: {'Accept': 'application/json',
             'Authorization': 'Bearer ' + token
   }
 };
 
-var allData = []
-var filteredData
-var triggers = []
-var msftPrice = 45.91
+var allData = new Array();
+var filteredData = new Array();
+var triggers = new Array();
+var underlyingPrice = 31.02
 var lowPct = 0.05
 var highPct = 0.15
 
@@ -88,9 +88,12 @@ setInterval(function() {
         console.log(allData);
         console.log('Response callback complete.')
 
-        if (allData[1] !== undefined) {
+        if (allData.length > 0) {
           console.log('Entered conditional Filtering Functions')
-          filteredData = filterAll(allData, msftPrice, lowPct, highPct);
+          filteredData.push(filterAll(allData, underlyingPrice, lowPct, highPct));
+        }
+        if (filteredData.length >= 2) {
+          checkTriggers(filteredData);
         }
       });
   });
@@ -101,9 +104,28 @@ setInterval(function() {
 
   req.end();
 }, 5000);
+// Triggers:
+// midpoint of any option moves up 50% or more
+function midpoint50(newOption, oldOption) {
+  if( (oldOption.midpoint * 1.5) <= newOption.midpoint) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
 
-
-// if (allData[1] !== undefined) {
-//   console.log('unlikely')
-//   filterAll(allData, MsftPrice, lowPct, highPct);
-// }
+function checkTriggers(filteredData) {
+  var arrLength = filteredData.length;
+  var lastChain = filteredData[arrLength - 1];
+  var penultimateChain = filteredData[arrLength -2];
+  for(var i = 0; i < arrLength; i++) {
+    eval(locus);
+    if (midpoint50(lastChain[i], penultimateChain[i]) ) {
+      var trigger = { 'option': lastChain[i],
+                      'trigger': "50%+"
+                    };
+      triggers.push(trigger);
+    }
+  }
+}

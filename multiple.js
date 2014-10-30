@@ -5,8 +5,7 @@ var io = require('socket.io').listen(3000);
 
 var token = process.env.TOKEN
 
-
-function buildTradierQuery (symbol, expiration) {
+function buildTradierOptionQuery (symbol, expiration) {
   var queryData = {
     hostname: 'sandbox.tradier.com',
     path: '/v1/markets/options/chains?symbol=' + symbol + '&expiration=' + expiration,
@@ -22,12 +21,12 @@ function buildAllQueries(symbols) {
   var result = new Array();
 
   for(var i = 0; i < symbols.length; i++) {
-    result.push(buildTradierQuery(symbols[i][0], symbols[i][1]));
+    result.push(buildTradierOptionQuery(symbols[i][0], symbols[i][1]));
   }
   return result;
 }
 
-function query(options) {
+function queryOptionChain(options) {
   var buffer = "",
       data;
 
@@ -55,7 +54,7 @@ function query(options) {
 
 function performQueries(queries) {
   for(var i = 0; i < queries.length; i++) {
-    query(queries[i]);
+    queryOptionChain(queries[i]);
   }
 }
 
